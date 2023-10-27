@@ -1,4 +1,4 @@
-package com.icebear2n2.purchase_service;
+package com.icebear2n2.purchaseService;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
