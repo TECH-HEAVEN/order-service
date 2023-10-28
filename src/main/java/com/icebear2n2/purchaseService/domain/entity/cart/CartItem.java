@@ -33,4 +33,8 @@ public class CartItem {
     private Timestamp createdAt;
     @UpdateTimestamp
     private Timestamp updatedAt;
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
 }
