@@ -1,4 +1,4 @@
-package com.icebear2n2.purchaseService;
+package com.icebear2n2.orderService;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
