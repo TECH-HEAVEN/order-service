@@ -1,9 +1,9 @@
-package com.icebear2n2.purchaseService.cart.controller;
+package com.icebear2n2.orderService.cart.controller;
 
-import com.icebear2n2.purchaseService.cart.service.CartService;
-import com.icebear2n2.purchaseService.domain.request.CartItemRequest;
-import com.icebear2n2.purchaseService.domain.request.UpdateCartItemQuantityRequest;
-import com.icebear2n2.purchaseService.domain.response.CartItemResponse;
+import com.icebear2n2.orderService.cart.service.CartService;
+import com.icebear2n2.orderService.domain.request.CartItemRequest;
+import com.icebear2n2.orderService.domain.request.UpdateCartItemQuantityRequest;
+import com.icebear2n2.orderService.domain.response.CartItemResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

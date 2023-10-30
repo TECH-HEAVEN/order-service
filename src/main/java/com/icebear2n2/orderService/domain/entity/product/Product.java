@@ -1,7 +1,7 @@
-package com.icebear2n2.purchaseService.domain.entity.product;
+package com.icebear2n2.orderService.domain.entity.product;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.icebear2n2.purchaseService.domain.entity.cart.CartItem;
+import com.icebear2n2.orderService.domain.entity.cart.CartItem;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,8 +1,8 @@
-package com.icebear2n2.purchaseService.domain.response;
+package com.icebear2n2.orderService.domain.response;
 
-import com.icebear2n2.purchaseService.domain.entity.cart.Cart;
-import com.icebear2n2.purchaseService.domain.entity.cart.CartItem;
-import com.icebear2n2.purchaseService.domain.entity.product.Product;
+import com.icebear2n2.orderService.domain.entity.cart.Cart;
+import com.icebear2n2.orderService.domain.entity.cart.CartItem;
+import com.icebear2n2.orderService.domain.entity.product.Product;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

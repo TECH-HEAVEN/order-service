@@ -1,4 +1,4 @@
-package com.icebear2n2.purchaseService.domain.entity.product;
+package com.icebear2n2.orderService.domain.entity.product;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

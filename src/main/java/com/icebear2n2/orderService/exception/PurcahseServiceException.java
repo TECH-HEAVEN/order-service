@@ -1,4 +1,4 @@
-package com.icebear2n2.purchaseService.exception;
+package com.icebear2n2.orderService.exception;
 
 import lombok.Getter;
 

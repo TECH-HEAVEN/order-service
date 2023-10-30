@@ -1,6 +1,6 @@
-package com.icebear2n2.purchaseService.domain.request;
+package com.icebear2n2.orderService.domain.request;
 
-import com.icebear2n2.purchaseService.domain.entity.cart.Cart;
+import com.icebear2n2.orderService.domain.entity.cart.Cart;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

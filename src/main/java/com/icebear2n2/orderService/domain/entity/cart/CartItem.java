@@ -1,7 +1,7 @@
-package com.icebear2n2.purchaseService.domain.entity.cart;
+package com.icebear2n2.orderService.domain.entity.cart;
 
-import com.icebear2n2.purchaseService.domain.entity.product.Product;
-import com.icebear2n2.purchaseService.domain.entity.purchase.Order;
+import com.icebear2n2.orderService.domain.entity.product.Product;
+import com.icebear2n2.orderService.domain.entity.order.Order;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +11,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.sql.Timestamp;
-import java.util.List;
 
 @Entity
 @Table(name = "cart_item")
