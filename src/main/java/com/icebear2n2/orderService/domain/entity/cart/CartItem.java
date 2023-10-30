@@ -1,6 +1,7 @@
 package com.icebear2n2.purchaseService.domain.entity.cart;
 
 import com.icebear2n2.purchaseService.domain.entity.product.Product;
+import com.icebear2n2.purchaseService.domain.entity.purchase.Order;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,7 +25,9 @@ public class CartItem {
     @ManyToOne
     @JoinColumn(name = "cart_id")
     private Cart cart;
-
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    private Order order;
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
