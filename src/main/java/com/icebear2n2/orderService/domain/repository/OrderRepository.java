@@ -4,5 +4,5 @@ import com.icebear2n2.orderService.domain.entity.order.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface OrderRepository extends JpaRepository<Order, Long> {
-
+    Long findByTrackingNumber(Long trackingNumber);
 }
