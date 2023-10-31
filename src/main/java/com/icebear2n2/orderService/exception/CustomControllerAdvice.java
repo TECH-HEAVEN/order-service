@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class CustomControllerAdvice {
     private static final Logger LOGGER = LoggerFactory.getLogger(CustomControllerAdvice.class);
 
-    @ExceptionHandler(PurcahseServiceException.class)
+    @ExceptionHandler(OrderServiceException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<?> exceptionHandler(PurcahseServiceException e) {
+    public ResponseEntity<?> exceptionHandler(OrderServiceException e) {
         LOGGER.info("ERROR OCCURS {}", e.toString());
         return ResponseEntity.status(e.getErrorCode().getHttpStatus()).body(e.getErrorCode() + " : " + e.getMessage());
 
