@@ -21,12 +21,13 @@ import java.util.List;
 public class Order {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderId;
-    private Integer trackingNumber;
+    private Long trackingNumber;
     @OneToMany(mappedBy = "order")
     private List<CartItem> cartItems;
     private Integer totalAmount;
     @Enumerated(EnumType.STRING)
-    private OrderStatus status;
+    @Column(name = "status", nullable = false, columnDefinition = "VARCHAR(255) DEFAULT 'PENDING'")
+    private OrderStatus status = OrderStatus.PENDING;
     @OneToMany(mappedBy = "order")
     private List<OrderDetail> orderDetails;
     @CreationTimestamp
@@ -41,5 +42,9 @@ public class Order {
 
     public void setDeletedAt(Timestamp deletedAt) {
         this.deletedAt = deletedAt;
+    }
+
+    public void setStatus(OrderStatus status) {
+        this.status = status;
     }
 }
