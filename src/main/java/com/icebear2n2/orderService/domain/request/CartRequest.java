@@ -1,6 +1,7 @@
 package com.icebear2n2.orderService.domain.request;
 
 import com.icebear2n2.orderService.domain.entity.cart.Cart;
+import com.icebear2n2.orderService.domain.entity.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,9 +10,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CartRequest {
+    private Long userId;
 
-    // TODO: 사용자가 생성 시 같이 생성?...
-    public Cart toEntity() {
-        return Cart.builder().build();
+    public Cart toEntity(User user) {
+        return Cart
+                .builder()
+                .user(user)
+                .build();
     }
 }

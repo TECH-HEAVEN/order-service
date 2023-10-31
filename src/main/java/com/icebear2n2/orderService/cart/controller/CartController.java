@@ -1,14 +1,16 @@
 package com.icebear2n2.orderService.cart.controller;
 
+
 import com.icebear2n2.orderService.cart.service.CartService;
-import com.icebear2n2.orderService.domain.request.CartItemRequest;
-import com.icebear2n2.orderService.domain.request.UpdateCartItemQuantityRequest;
-import com.icebear2n2.orderService.domain.response.CartItemResponse;
+import com.icebear2n2.orderService.domain.request.CartRequest;
+import com.icebear2n2.orderService.domain.response.CartResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,40 +19,13 @@ public class CartController {
     private final CartService cartService;
 
     @PostMapping
-    public ResponseEntity<CartItemResponse> addCart(@RequestBody CartItemRequest cartItemRequest) {
-        CartItemResponse cartItemResponse = cartService.addCart(cartItemRequest);
+    public ResponseEntity<CartResponse> createCart(@RequestBody CartRequest cartRequest) {
+        CartResponse cartResponse = cartService.createCart(cartRequest);
 
-        if (cartItemResponse.isSuccess()) {
-            return new ResponseEntity<>(cartItemResponse, HttpStatus.CREATED);
+        if (cartResponse.isSuccess()) {
+            return new ResponseEntity<>(cartResponse, HttpStatus.CREATED);
         } else {
-            return new ResponseEntity<>(cartItemResponse, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(cartResponse, HttpStatus.BAD_REQUEST);
         }
-    }
-
-    @GetMapping
-    public ResponseEntity<?> getCartItems(@RequestBody Long cartId) {
-        return new ResponseEntity<>(cartService.getCartItems(cartId), HttpStatus.OK);
-    }
-
-    @PutMapping("/update")
-    public ResponseEntity<CartItemResponse> updateCartItemQuantity(@RequestBody UpdateCartItemQuantityRequest updateCartItemQuantityRequest) {
-        CartItemResponse cartItemResponse = cartService.updateCartItemQuantity(updateCartItemQuantityRequest);
-        if (cartItemResponse.isSuccess()) {
-            return new ResponseEntity<>(cartItemResponse, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(cartItemResponse, HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    @DeleteMapping("/delete")
-    public ResponseEntity<String> removeCartItem(@RequestBody Long cartItemId) {
-        cartService.removeCartItem(cartItemId);
-        return new ResponseEntity<>("Cart item removed successfully.", HttpStatus.OK);
-    }
-
-    @DeleteMapping("/delete/all")
-    public ResponseEntity<String> removeCartItemAll(@RequestBody Long cartId) {
-        cartService.removeCartItemAll(cartId);
-        return new ResponseEntity<>("All cart item removed successfully.", HttpStatus.OK);
     }
 }

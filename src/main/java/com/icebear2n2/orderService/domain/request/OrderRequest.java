@@ -2,6 +2,7 @@ package com.icebear2n2.orderService.domain.request;
 
 import com.icebear2n2.orderService.domain.entity.order.Order;
 import com.icebear2n2.orderService.domain.entity.order.OrderStatus;
+import com.icebear2n2.orderService.domain.entity.user.User;
 import lombok.*;
 
 
@@ -11,11 +12,14 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderRequest {
+    private Long userId;
     private Integer totalAmount;
     private OrderStatus status;
 
-    public Order toEntity(Long trackingNumber) {
+
+    public Order toEntity(User user, Long trackingNumber) {
         return Order.builder()
+                .user(user)
                 .trackingNumber(trackingNumber)
                 .totalAmount(totalAmount)
                 .status(status)

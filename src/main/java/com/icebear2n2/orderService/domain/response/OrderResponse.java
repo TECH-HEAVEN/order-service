@@ -4,6 +4,7 @@ import com.icebear2n2.orderService.domain.entity.cart.CartItem;
 import com.icebear2n2.orderService.domain.entity.order.Order;
 import com.icebear2n2.orderService.domain.entity.order.OrderDetail;
 import com.icebear2n2.orderService.domain.entity.order.OrderStatus;
+import com.icebear2n2.orderService.domain.entity.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,6 +28,8 @@ public class OrderResponse {
     @NoArgsConstructor
     public static class OrderData {
         private Long orderId;
+        private Long trackingNumber;
+        private User user;
         private List<CartItem> cartItems;
         private Integer totalAmount;
         private OrderStatus status;
@@ -37,6 +40,8 @@ public class OrderResponse {
 
         public OrderData(Order order) {
             this.orderId = order.getOrderId();
+            this.trackingNumber = order.getTrackingNumber();
+            this.user = order.getUser();
             this.cartItems = order.getCartItems();
             this.totalAmount = order.getTotalAmount();
             this.status = order.getStatus();

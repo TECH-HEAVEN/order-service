@@ -3,10 +3,12 @@ package com.icebear2n2.orderService.order.service;
 import com.icebear2n2.orderService.domain.entity.cart.CartItem;
 import com.icebear2n2.orderService.domain.entity.order.Order;
 import com.icebear2n2.orderService.domain.entity.order.OrderDetail;
+import com.icebear2n2.orderService.domain.entity.user.User;
 import com.icebear2n2.orderService.domain.repository.CartItemRepository;
 import com.icebear2n2.orderService.domain.repository.OrderDetailRepository;
 import com.icebear2n2.orderService.domain.repository.OrderRepository;
 
+import com.icebear2n2.orderService.domain.repository.UserRepository;
 import com.icebear2n2.orderService.domain.request.OrderRequest;
 
 import com.icebear2n2.orderService.domain.request.UpdateOrderStatusRequest;
@@ -27,10 +29,14 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final OrderDetailRepository orderDetailRepository;
     private final CartItemRepository cartItemRepository;
+    private final UserRepository userRepository;
     private final Random random;
 
     public OrderResponse createOrder(OrderRequest orderRequest) {
-        Order order = orderRequest.toEntity(generateTrackingNumber());
+        User user = userRepository.findById(orderRequest.getUserId())
+                .orElseThrow(() -> new OrderServiceException(ErrorCode.USER_NOT_FOUND));
+
+        Order order = orderRequest.toEntity(user, generateTrackingNumber());
         List<CartItem> cartItems = cartItemRepository.findByOrder(order);
 
         if (cartItems.isEmpty()) {
@@ -79,7 +85,7 @@ public class OrderService {
     }
 
 
-    /*
+    /**
     * 주문 번호 12자리 랜덤으로 생성
      */
     private Long generateTrackingNumber() {

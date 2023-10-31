@@ -1,6 +1,7 @@
 package com.icebear2n2.orderService.domain.entity.order;
 
 import com.icebear2n2.orderService.domain.entity.cart.CartItem;
+import com.icebear2n2.orderService.domain.entity.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,22 +20,25 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Order {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderId;
     private Long trackingNumber;
-    @OneToMany(mappedBy = "order")
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<CartItem> cartItems;
     private Integer totalAmount;
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false, columnDefinition = "VARCHAR(255) DEFAULT 'PENDING'")
     private OrderStatus status = OrderStatus.PENDING;
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderDetail> orderDetails;
     @CreationTimestamp
     private Timestamp createdAt;
     @UpdateTimestamp
     private Timestamp updatedAt;
-
     private Timestamp deletedAt;
     public void setCartItems(List<CartItem> cartItems) {
         this.cartItems = cartItems;

@@ -13,6 +13,7 @@ public enum ErrorCode {
     ORDER_NOT_FOUND(HttpStatus.NOT_FOUND, "ORDER NOT FOUND."),
     ORDER_DETAIL_NOT_FOUND(HttpStatus.NOT_FOUND, "ORDER DETAIL NOT FOUND."),
     CART_ITEM_NOT_FOUND(HttpStatus.NOT_FOUND, "CART ITEM NOT FOUND."),
+    USER_NOT_FOUND(HttpStatus.NOT_FOUND, "USER NOT FOUND."),
     ;
     private final HttpStatus httpStatus;
     private final String message;

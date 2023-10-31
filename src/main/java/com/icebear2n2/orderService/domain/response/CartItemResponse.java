@@ -25,6 +25,7 @@ public class CartItemResponse {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class CartItemData {
+        private Long cartItemId;
         private Cart cart;
         private Product product;
         private Integer quantity;
@@ -32,6 +33,7 @@ public class CartItemResponse {
         private Timestamp updatedAt;
 
         public CartItemData(CartItem cartItem) {
+            this.cartItemId = cartItem.getCartItemId();
             this.cart = cartItem.getCart();
             this.product = cartItem.getProduct();
             this.quantity = cartItem.getQuantity();

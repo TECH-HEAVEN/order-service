@@ -1,4 +1,5 @@
 package com.icebear2n2.orderService.domain.entity.cart;
+import com.icebear2n2.orderService.domain.entity.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,7 +20,10 @@ import java.util.List;
 public class Cart {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cartId;
-    @OneToMany(mappedBy = "cart")
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
     private List<CartItem> cartItems;
     @CreationTimestamp
     private Timestamp createdAt;
