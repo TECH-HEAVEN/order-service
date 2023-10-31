@@ -10,7 +10,7 @@ import com.icebear2n2.orderService.domain.request.CartItemRequest;
 import com.icebear2n2.orderService.domain.request.UpdateCartItemQuantityRequest;
 import com.icebear2n2.orderService.domain.response.CartItemResponse;
 import com.icebear2n2.orderService.exception.ErrorCode;
-import com.icebear2n2.orderService.exception.PurcahseServiceException;
+import com.icebear2n2.orderService.exception.OrderServiceException;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,9 +33,9 @@ public class CartService {
 
 
         // TODO: 예외 처리: 장바구니 ID 가 존재하지 않는다면, 유저가 존재하지 않거나, 탈퇴된 유저일 경우가 있음. -> 유저가 존재한다면 절대 장바구니가 없을리 없음. 다시 로직을 자세히 설계할 필요가 있음 (중요)
-        Cart cart = cartRepository.findById(cartItemRequest.getCartId()).orElseThrow(() -> new PurcahseServiceException(ErrorCode.INTERNAL_SERVER_ERROR));
+        Cart cart = cartRepository.findById(cartItemRequest.getCartId()).orElseThrow(() -> new OrderServiceException(ErrorCode.INTERNAL_SERVER_ERROR));
 
-        Product product = productRepository.findById(cartItemRequest.getProductId()).orElseThrow(() -> new PurcahseServiceException(ErrorCode.PRODUCT_NOT_FOUND));
+        Product product = productRepository.findById(cartItemRequest.getProductId()).orElseThrow(() -> new OrderServiceException(ErrorCode.PRODUCT_NOT_FOUND));
 
 
         try {
@@ -53,7 +53,7 @@ public class CartService {
     public List<CartItemResponse.CartItemData> getCartItems(Long cartId) {
 
         // TODO: 예외 처리: 장바구니 ID 가 존재하지 않는다면, 유저가 존재하지 않거나, 탈퇴된 유저일 경우가 있음. -> 유저가 존재한다면 절대 장바구니가 없을리 없음. 다시 로직을 자세히 설계할 필요가 있음 (중요)
-        Cart cart = cartRepository.findById(cartId).orElseThrow(() -> new PurcahseServiceException(ErrorCode.INTERNAL_SERVER_ERROR));
+        Cart cart = cartRepository.findById(cartId).orElseThrow(() -> new OrderServiceException(ErrorCode.INTERNAL_SERVER_ERROR));
 
         return cartItemRepository.findByCart(cart)
                 .stream()
@@ -65,11 +65,11 @@ public class CartService {
     public CartItemResponse updateCartItemQuantity(UpdateCartItemQuantityRequest updateCartItemQuantityRequest) {
 
         // TODO: 예외 처리: 장바구니 ID 가 존재하지 않는다면, 유저가 존재하지 않거나, 탈퇴된 유저일 경우가 있음. -> 유저가 존재한다면 절대 장바구니가 없을리 없음. 다시 로직을 자세히 설계할 필요가 있음 (중요)
-        cartRepository.findById(updateCartItemQuantityRequest.getCartId()).orElseThrow(() -> new PurcahseServiceException(ErrorCode.INTERNAL_SERVER_ERROR));
+        cartRepository.findById(updateCartItemQuantityRequest.getCartId()).orElseThrow(() -> new OrderServiceException(ErrorCode.INTERNAL_SERVER_ERROR));
 
         try {
             CartItem existingCartItem = cartItemRepository.findById(updateCartItemQuantityRequest.getCartItemId())
-                    .orElseThrow(() -> new PurcahseServiceException(ErrorCode.CART_ITEM_NOT_FOUND));
+                    .orElseThrow(() -> new OrderServiceException(ErrorCode.CART_ITEM_NOT_FOUND));
 
             updateCartItemQuantityRequest.updateCartItemIfNotNull(existingCartItem);
             cartItemRepository.save(existingCartItem);
@@ -85,20 +85,20 @@ public class CartService {
     //        TODO: DELETE
     public void removeCartItem(Long cartItemId) {
         if (!cartItemRepository.existsByCartItemId(cartItemId)) {
-            throw new PurcahseServiceException(ErrorCode.CART_ITEM_NOT_FOUND);
+            throw new OrderServiceException(ErrorCode.CART_ITEM_NOT_FOUND);
         }
 
         try {
             cartItemRepository.deleteById(cartItemId);
         } catch (Exception e) {
-            throw new PurcahseServiceException(ErrorCode.INTERNAL_SERVER_ERROR);
+            throw new OrderServiceException(ErrorCode.INTERNAL_SERVER_ERROR);
         }
     }
 
 //    TODO: DELETE ALL
 
     public void removeCartItemAll(Long cartId) {
-        Cart cart = cartRepository.findById(cartId).orElseThrow(() -> new PurcahseServiceException(ErrorCode.INTERNAL_SERVER_ERROR));
+        Cart cart = cartRepository.findById(cartId).orElseThrow(() -> new OrderServiceException(ErrorCode.INTERNAL_SERVER_ERROR));
         cartItemRepository.deleteByCart(cart);
     }
 }
