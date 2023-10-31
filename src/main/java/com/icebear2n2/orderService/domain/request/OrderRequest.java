@@ -11,11 +11,10 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderRequest {
-    private Integer trackingNumber;
     private Integer totalAmount;
     private OrderStatus status;
 
-    public Order toEntity() {
+    public Order toEntity(Long trackingNumber) {
         return Order.builder()
                 .trackingNumber(trackingNumber)
                 .totalAmount(totalAmount)
