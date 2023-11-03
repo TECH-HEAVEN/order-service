@@ -1,5 +1,4 @@
-package com.icebear2n2.orderService.domain.entity.cart;
-import com.icebear2n2.orderService.domain.entity.user.User;
+package com.icebear2n2.orderService.domain.entity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

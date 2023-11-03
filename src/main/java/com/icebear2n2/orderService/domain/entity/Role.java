@@ -1,4 +1,4 @@
-package com.icebear2n2.orderService.domain.entity.user;
+package com.icebear2n2.orderService.domain.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

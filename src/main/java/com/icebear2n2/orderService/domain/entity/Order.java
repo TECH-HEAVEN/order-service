@@ -1,7 +1,9 @@
-package com.icebear2n2.orderService.domain.entity.order;
+package com.icebear2n2.orderService.domain.entity;
 
-import com.icebear2n2.orderService.domain.entity.cart.CartItem;
-import com.icebear2n2.orderService.domain.entity.user.User;
+import com.icebear2n2.orderService.domain.entity.CartItem;
+import com.icebear2n2.orderService.domain.entity.OrderDetail;
+import com.icebear2n2.orderService.domain.entity.OrderStatus;
+import com.icebear2n2.orderService.domain.entity.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,7 +16,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 @Entity
-@Table(name = "Order")
+@Table(name = "orders")
 @Getter
 @Builder
 @AllArgsConstructor

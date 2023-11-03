@@ -1,4 +1,4 @@
-package com.icebear2n2.orderService.domain.entity.product;
+package com.icebear2n2.orderService.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;

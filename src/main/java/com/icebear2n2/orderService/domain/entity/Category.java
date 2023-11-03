@@ -1,4 +1,4 @@
-package com.icebear2n2.orderService.domain.entity.product;
+package com.icebear2n2.orderService.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,6 +9,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Entity
 @Table(name = "category")
@@ -24,4 +25,7 @@ public class Category {
     private Timestamp createdAt;
     @UpdateTimestamp
     private Timestamp updatedAt;
+
+    @OneToMany(mappedBy = "category")
+    private List<Product> products;
 }

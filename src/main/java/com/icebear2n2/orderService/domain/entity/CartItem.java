@@ -1,6 +1,5 @@
-package com.icebear2n2.orderService.domain.entity.order;
+package com.icebear2n2.orderService.domain.entity;
 
-import com.icebear2n2.orderService.domain.entity.product.Product;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,15 +11,18 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "order_detail")
+@Table(name = "cart_item")
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderDetail {
+public class CartItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long orderDetailId;
+    private Long cartItemId;
+    @ManyToOne
+    @JoinColumn(name = "cart_id")
+    private Cart cart;
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;
@@ -30,7 +32,6 @@ public class OrderDetail {
     private Integer quantity;
     @CreationTimestamp
     private Timestamp createdAt;
-    private Timestamp deletedAt;
     @UpdateTimestamp
     private Timestamp updatedAt;
 
@@ -38,7 +39,7 @@ public class OrderDetail {
         this.quantity = quantity;
     }
 
-    public void setDeletedAt(Timestamp deletedAt) {
-        this.deletedAt = deletedAt;
+    public void setOrder(Order order) {
+        this.order = order;
     }
 }
