@@ -1,22 +1,25 @@
 package com.icebear2n2.orderService.order.service;
 
-import com.icebear2n2.orderService.domain.entity.cart.CartItem;
-import com.icebear2n2.orderService.domain.entity.order.Order;
-import com.icebear2n2.orderService.domain.entity.order.OrderDetail;
-import com.icebear2n2.orderService.domain.entity.user.User;
+import com.icebear2n2.orderService.domain.entity.Cart;
+import com.icebear2n2.orderService.domain.entity.CartItem;
+import com.icebear2n2.orderService.domain.entity.Order;
+import com.icebear2n2.orderService.domain.entity.OrderDetail;
+import com.icebear2n2.orderService.domain.entity.User;
+
 import com.icebear2n2.orderService.domain.repository.CartItemRepository;
+import com.icebear2n2.orderService.domain.repository.CartRepository;
 import com.icebear2n2.orderService.domain.repository.OrderDetailRepository;
 import com.icebear2n2.orderService.domain.repository.OrderRepository;
-
 import com.icebear2n2.orderService.domain.repository.UserRepository;
+
 import com.icebear2n2.orderService.domain.request.OrderRequest;
-
 import com.icebear2n2.orderService.domain.request.UpdateOrderStatusRequest;
-
 import com.icebear2n2.orderService.domain.response.OrderResponse;
 import com.icebear2n2.orderService.exception.ErrorCode;
 import com.icebear2n2.orderService.exception.OrderServiceException;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -25,10 +28,11 @@ import java.util.Random;
 @Service
 @RequiredArgsConstructor
 public class OrderService {
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(OrderService.class);
     private final OrderRepository orderRepository;
     private final OrderDetailRepository orderDetailRepository;
     private final CartItemRepository cartItemRepository;
+    private final CartRepository cartRepository;
     private final UserRepository userRepository;
     private final Random random;
 
@@ -37,22 +41,38 @@ public class OrderService {
                 .orElseThrow(() -> new OrderServiceException(ErrorCode.USER_NOT_FOUND));
 
         Order order = orderRequest.toEntity(user, generateTrackingNumber());
-        List<CartItem> cartItems = cartItemRepository.findByOrder(order);
+
+        // 먼저 Order 객체를 데이터베이스에 저장
+        Order savedOrder = orderRepository.save(order);
+
+        Cart byUser = cartRepository.findByUser(user);
+        List<CartItem> cartItems = cartItemRepository.findByCart(byUser);
 
         if (cartItems.isEmpty()) {
+
             return OrderResponse.failure(ErrorCode.CART_ITEM_NOT_FOUND.toString());
         }
 
         try {
-            order.setCartItems(cartItems);
-            Order saveOrder = orderRepository.save(order);
-            return OrderResponse.success(saveOrder);
+            for (CartItem cartItem : cartItems) {
+                cartItem.setOrder(savedOrder);
+                cartItemRepository.save(cartItem);
+            }
+
+            savedOrder.setCartItems(cartItems);
+            orderRepository.save(savedOrder);
+
+            return OrderResponse.success(savedOrder);
         } catch (Exception e) {
+            LOGGER.info("INTERNAL_SERVER_ERROR: {}", e.toString());
             return OrderResponse.failure(ErrorCode.INTERNAL_SERVER_ERROR.toString());
         }
-
     }
 
+
+    //     TODO: [배송 서비스 로직에서 같이 사용 !!]
+    //     TODO: 1. 배송에서 배송 생성 메소드 사용 시 -> 주문 상태: SHIPPED
+    //     TODO: 2. 배송에서 배송 완료 메소드 사용 시 -> 주문 상태: DELIVERED
 
     public OrderResponse changeOrderStatus(UpdateOrderStatusRequest updateOrderStatusRequest) {
         Order order = orderRepository.findById(updateOrderStatusRequest.getOrderId())
@@ -63,6 +83,7 @@ public class OrderService {
             Order updateOrder = orderRepository.save(order);
             return OrderResponse.success(updateOrder);
         } catch (Exception e) {
+            LOGGER.info("INTERNAL_SERVER_ERROR: {}", e.toString());
             return OrderResponse.failure(ErrorCode.INTERNAL_SERVER_ERROR.toString());
         }
 
@@ -86,13 +107,14 @@ public class OrderService {
 
 
     /**
-    * 주문 번호 12자리 랜덤으로 생성
+     * 주문 번호 12자리 랜덤으로 생성
      */
     private Long generateTrackingNumber() {
         long trackingNumber;
         do {
             trackingNumber = 100000000000L + random.nextLong(900000000000L);
-        } while (orderRepository.findByTrackingNumber(trackingNumber) != null);
+        } while (orderRepository.existsByTrackingNumber(trackingNumber));
         return trackingNumber;
     }
+
 }
