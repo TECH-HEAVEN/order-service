@@ -1,8 +1,6 @@
 package com.icebear2n2.orderService.domain.response;
 
-import com.icebear2n2.orderService.domain.entity.order.Order;
-import com.icebear2n2.orderService.domain.entity.order.OrderDetail;
-import com.icebear2n2.orderService.domain.entity.product.Product;
+import com.icebear2n2.orderService.domain.entity.OrderDetail;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,8 +24,8 @@ public class OrderDetailResponse {
     @NoArgsConstructor
     public static class OrderDetailData {
         private Long orderDetailId;
-        private Order order;
-        private Product product;
+        private Long orderId;
+        private Long productId;
         private Integer quantity;
         private Timestamp createdAt;
         private Timestamp updatedAt;
@@ -35,8 +33,8 @@ public class OrderDetailResponse {
 
         public OrderDetailData(OrderDetail orderDetail) {
             this.orderDetailId = orderDetail.getOrderDetailId();
-            this.order = orderDetail.getOrder();
-            this.product = orderDetail.getProduct();
+            this.orderId = orderDetail.getOrder().getOrderId();
+            this.productId = orderDetail.getProduct().getProductId();
             this.quantity = orderDetail.getQuantity();
             this.createdAt = orderDetail.getCreatedAt();
             this.updatedAt = orderDetail.getUpdatedAt();

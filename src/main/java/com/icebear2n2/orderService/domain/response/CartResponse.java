@@ -1,8 +1,7 @@
 package com.icebear2n2.orderService.domain.response;
 
-import com.icebear2n2.orderService.domain.entity.cart.Cart;
-import com.icebear2n2.orderService.domain.entity.cart.CartItem;
-import com.icebear2n2.orderService.domain.entity.user.User;
+import com.icebear2n2.orderService.domain.dto.CartItemDTO;
+import com.icebear2n2.orderService.domain.entity.Cart;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,15 +25,15 @@ public class CartResponse {
     @NoArgsConstructor
     public static class CartData {
         private Long cartId;
-        private User user;
-        private List<CartItem> cartItems;
+        private Long userId;
+        private List<CartItemDTO> cartItems;
         private Timestamp createdAt;
         private Timestamp updatedAt;
 
         public CartData(Cart cart) {
             this.cartId = cart.getCartId();
-            this.user = cart.getUser();
-            this.cartItems = cart.getCartItems();
+            this.userId = cart.getUser().getUserId();
+            this.cartItems = cart.getCartItems() != null ? cart.getCartItems().stream().map(CartItemDTO::new).toList() : null;
             this.createdAt = cart.getCreatedAt();
             this.updatedAt = cart.getUpdatedAt();
         }

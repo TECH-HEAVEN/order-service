@@ -1,8 +1,6 @@
 package com.icebear2n2.orderService.domain.response;
 
-import com.icebear2n2.orderService.domain.entity.cart.Cart;
-import com.icebear2n2.orderService.domain.entity.cart.CartItem;
-import com.icebear2n2.orderService.domain.entity.product.Product;
+import com.icebear2n2.orderService.domain.entity.CartItem;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,16 +24,16 @@ public class CartItemResponse {
     @NoArgsConstructor
     public static class CartItemData {
         private Long cartItemId;
-        private Cart cart;
-        private Product product;
+        private Long cartId;
+        private Long productId;
         private Integer quantity;
         private Timestamp createdAt;
         private Timestamp updatedAt;
 
         public CartItemData(CartItem cartItem) {
             this.cartItemId = cartItem.getCartItemId();
-            this.cart = cartItem.getCart();
-            this.product = cartItem.getProduct();
+            this.cartId = cartItem.getCart().getCartId();
+            this.productId = cartItem.getProduct().getProductId();
             this.quantity = cartItem.getQuantity();
             this.createdAt = cartItem.getCreatedAt();
             this.updatedAt = cartItem.getUpdatedAt();
