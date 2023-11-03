@@ -1,6 +1,6 @@
 package com.icebear2n2.orderService.domain.request;
 
-import com.icebear2n2.orderService.domain.entity.order.OrderStatus;
+import com.icebear2n2.orderService.domain.entity.OrderStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

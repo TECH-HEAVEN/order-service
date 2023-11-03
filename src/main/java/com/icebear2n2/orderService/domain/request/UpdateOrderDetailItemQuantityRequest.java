@@ -1,6 +1,6 @@
 package com.icebear2n2.orderService.domain.request;
 
-import com.icebear2n2.orderService.domain.entity.order.OrderDetail;
+import com.icebear2n2.orderService.domain.entity.OrderDetail;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UpdateOrderDetailItemQuantityRequest {
     private Long orderDetailId;
+    private Long orderId;
     private Long productId;
     private Integer quantity;
 
