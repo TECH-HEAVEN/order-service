@@ -1,8 +1,8 @@
 package com.icebear2n2.orderService.cart.service;
 
-import com.icebear2n2.orderService.domain.entity.cart.Cart;
-import com.icebear2n2.orderService.domain.entity.cart.CartItem;
-import com.icebear2n2.orderService.domain.entity.product.Product;
+import com.icebear2n2.orderService.domain.entity.Cart;
+import com.icebear2n2.orderService.domain.entity.CartItem;
+import com.icebear2n2.orderService.domain.entity.Product;
 import com.icebear2n2.orderService.domain.repository.CartItemRepository;
 import com.icebear2n2.orderService.domain.repository.CartRepository;
 import com.icebear2n2.orderService.domain.repository.ProductRepository;
@@ -29,16 +29,23 @@ public class CartItemService {
     private final ProductRepository productRepository;
 
     public CartItemResponse addCart(CartItemRequest cartItemRequest) {
-        Cart cart = cartRepository.findById(cartItemRequest.getCartId()).orElseThrow(() -> new OrderServiceException(ErrorCode.INTERNAL_SERVER_ERROR));
-        Product product = productRepository.findById(cartItemRequest.getProductId()).orElseThrow(() -> new OrderServiceException(ErrorCode.PRODUCT_NOT_FOUND));
-
+        if (!cartRepository.existsByCartId(cartItemRequest.getCartId())) {
+            return CartItemResponse.failure(ErrorCode.CART_NOT_FOUND.toString());
+        }
+        if (!productRepository.existsByProductId(cartItemRequest.getProductId())) {
+            return CartItemResponse.failure(ErrorCode.PRODUCT_NOT_FOUND.toString());
+        }
 
         try {
+            Cart cart = cartRepository.findById(cartItemRequest.getCartId()).orElseThrow(() -> new OrderServiceException(ErrorCode.INTERNAL_SERVER_ERROR));
+            Product product = productRepository.findById(cartItemRequest.getProductId()).orElseThrow(() -> new OrderServiceException(ErrorCode.PRODUCT_NOT_FOUND));
+
             CartItem cartItem = cartItemRequest.toEntity(cart, product);
 
             CartItem saveCartItem = cartItemRepository.save(cartItem);
             return CartItemResponse.success(saveCartItem);
         } catch (Exception e) {
+            LOGGER.info("INTERNAL_SERVER_ERROR: {}", e.toString());
             return CartItemResponse.failure(ErrorCode.INTERNAL_SERVER_ERROR.toString());
         }
 
@@ -67,7 +74,7 @@ public class CartItemService {
             cartItemRepository.save(existingCartItem);
             return CartItemResponse.success(existingCartItem);
         } catch (Exception e) {
-            LOGGER.info("ERROR OCCURS {}", e.toString());
+            LOGGER.info("INTERNAL_SERVER_ERROR: {}", e.toString());
             return CartItemResponse.failure(ErrorCode.INTERNAL_SERVER_ERROR.toString());
         }
 
@@ -83,6 +90,7 @@ public class CartItemService {
         try {
             cartItemRepository.deleteById(cartItemId);
         } catch (Exception e) {
+            LOGGER.info("INTERNAL_SERVER_ERROR: {}", e.toString());
             throw new OrderServiceException(ErrorCode.INTERNAL_SERVER_ERROR);
         }
     }
