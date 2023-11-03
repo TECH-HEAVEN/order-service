@@ -1,10 +1,13 @@
 package com.icebear2n2.orderService.cart.controller;
 
 import com.icebear2n2.orderService.cart.service.CartItemService;
+import com.icebear2n2.orderService.domain.request.CartIDRequest;
 import com.icebear2n2.orderService.domain.request.CartItemRequest;
 import com.icebear2n2.orderService.domain.request.UpdateCartItemQuantityRequest;
 import com.icebear2n2.orderService.domain.response.CartItemResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,8 +31,12 @@ public class CartItemController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getCartItems(@RequestBody Long cartId) {
-        return new ResponseEntity<>(cartItemService.getCartItems(cartId), HttpStatus.OK);
+    public ResponseEntity<Page<CartItemResponse.CartItemData>> getCartItems(
+            @RequestBody CartIDRequest cartIDRequest,
+            @RequestParam(name = "size", required = false, defaultValue = "5") Integer size,
+                                          @RequestParam(name = "page", required = false, defaultValue = "0") Integer page) {
+        PageRequest request = PageRequest.of(page, size);
+        return new ResponseEntity<>(cartItemService.getAllByCart(cartIDRequest, request), HttpStatus.OK);
     }
 
     @PutMapping("/update")

@@ -6,6 +6,7 @@ import com.icebear2n2.orderService.domain.entity.Product;
 import com.icebear2n2.orderService.domain.repository.CartItemRepository;
 import com.icebear2n2.orderService.domain.repository.CartRepository;
 import com.icebear2n2.orderService.domain.repository.ProductRepository;
+import com.icebear2n2.orderService.domain.request.CartIDRequest;
 import com.icebear2n2.orderService.domain.request.CartItemRequest;
 import com.icebear2n2.orderService.domain.request.UpdateCartItemQuantityRequest;
 import com.icebear2n2.orderService.domain.response.CartItemResponse;
@@ -14,6 +15,8 @@ import com.icebear2n2.orderService.exception.OrderServiceException;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -52,13 +55,11 @@ public class CartItemService {
     }
 
     //        TODO: READ
-    public List<CartItemResponse.CartItemData> getCartItems(Long cartId) {
-        Cart cart = cartRepository.findById(cartId).orElseThrow(() -> new OrderServiceException(ErrorCode.INTERNAL_SERVER_ERROR));
+    public Page<CartItemResponse.CartItemData> getAllByCart(CartIDRequest cartIDRequest, PageRequest pageRequest) {
+        Cart cart = cartRepository.findById(cartIDRequest.getCartId()).orElseThrow(() -> new OrderServiceException(ErrorCode.INTERNAL_SERVER_ERROR));
+        Page<CartItem> all = cartItemRepository.findAllByCart(cart, pageRequest);
 
-        return cartItemRepository.findByCart(cart)
-                .stream()
-                .map(CartItemResponse.CartItemData::new)
-                .collect(Collectors.toList());
+        return all.map(CartItemResponse.CartItemData::new);
     }
 
     //        TODO: UPDATE

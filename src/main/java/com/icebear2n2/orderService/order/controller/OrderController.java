@@ -1,9 +1,12 @@
 package com.icebear2n2.orderService.order.controller;
 import com.icebear2n2.orderService.domain.request.OrderRequest;
 import com.icebear2n2.orderService.domain.request.UpdateOrderStatusRequest;
+import com.icebear2n2.orderService.domain.request.UserIDRequest;
 import com.icebear2n2.orderService.domain.response.OrderResponse;
 import com.icebear2n2.orderService.order.service.OrderService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +24,15 @@ public class OrderController {
         } else {
             return new ResponseEntity<>(orderResponse, HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<OrderResponse.OrderData>> getAll(
+            @RequestBody UserIDRequest userIDRequest,
+            @RequestParam(name = "size", required = false, defaultValue = "5") Integer size,
+            @RequestParam(name = "page", required = false, defaultValue = "0") Integer page) {
+        PageRequest request = PageRequest.of(page, size);
+        return  new ResponseEntity<>(orderService.getAllByUser(userIDRequest, request), HttpStatus.OK);
     }
 
     @PutMapping("/status")

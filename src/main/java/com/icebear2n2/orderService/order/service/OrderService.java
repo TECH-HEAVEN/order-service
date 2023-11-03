@@ -14,12 +14,15 @@ import com.icebear2n2.orderService.domain.repository.UserRepository;
 
 import com.icebear2n2.orderService.domain.request.OrderRequest;
 import com.icebear2n2.orderService.domain.request.UpdateOrderStatusRequest;
+import com.icebear2n2.orderService.domain.request.UserIDRequest;
 import com.icebear2n2.orderService.domain.response.OrderResponse;
 import com.icebear2n2.orderService.exception.ErrorCode;
 import com.icebear2n2.orderService.exception.OrderServiceException;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -68,6 +71,14 @@ public class OrderService {
             return OrderResponse.failure(ErrorCode.INTERNAL_SERVER_ERROR.toString());
         }
     }
+
+
+    public Page<OrderResponse.OrderData> getAllByUser(UserIDRequest userIDRequest, PageRequest pageRequest) {
+        User user = userRepository.findById(userIDRequest.getUserId()).orElseThrow(() -> new OrderServiceException(ErrorCode.USER_NOT_FOUND));
+        Page<Order> all = orderRepository.findAllByUser(user, pageRequest);
+        return all.map(OrderResponse.OrderData::new);
+    }
+
 
 
     //     TODO: [배송 서비스 로직에서 같이 사용 !!]

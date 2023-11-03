@@ -2,6 +2,8 @@ package com.icebear2n2.orderService.domain.repository;
 
 import com.icebear2n2.orderService.domain.entity.Cart;
 import com.icebear2n2.orderService.domain.entity.CartItem;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -11,5 +13,5 @@ public interface CartItemRepository extends JpaRepository<CartItem, Long> {
     Boolean existsByCartItemId(Long cartItemId);
     void deleteByCart(Cart cart);
 
-
+    Page<CartItem> findAllByCart(Cart cart, Pageable pageable);
 }

@@ -1,10 +1,13 @@
 package com.icebear2n2.orderService.order.controller;
 
 import com.icebear2n2.orderService.domain.request.OrderDetailRequest;
+import com.icebear2n2.orderService.domain.request.OrderIDRequest;
 import com.icebear2n2.orderService.domain.request.UpdateOrderDetailItemQuantityRequest;
 import com.icebear2n2.orderService.domain.response.OrderDetailResponse;
 import com.icebear2n2.orderService.order.service.OrderDetailService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +26,16 @@ public class OrderDetailController {
         } else {
             return new ResponseEntity<>(orderDetailResponse, HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<OrderDetailResponse.OrderDetailData>> getAll(
+            @RequestBody OrderIDRequest orderIDRequest,
+            @RequestParam(name = "size", required = false, defaultValue = "5") Integer size,
+            @RequestParam(name = "page", required = false, defaultValue = "0") Integer page) {
+        PageRequest request = PageRequest.of(page, size);
+
+        return new ResponseEntity<>(orderDetailService.getAllByOrder(orderIDRequest, request), HttpStatus.OK);
     }
 
     @PutMapping("/update")
